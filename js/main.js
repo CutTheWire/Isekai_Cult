@@ -14,8 +14,11 @@ function initSite() {
     // 1. 네비게이션 활성화 상태 관리
     setupNavigation();
     
-    // 2. 메인 페이지의 문명 그리드 렌더링 (2단계에서 데이터 연동 예정)
-    renderCivilizationPreview();
+    // 2. 메인 페이지(인덱스)에서만 기본 문명 그리드 렌더링
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    if (currentPath === '' || currentPath === 'index.html') {
+        renderCivilizationCards('civ-grid');
+    }
 }
 
 function setupNavigation() {
@@ -37,30 +40,39 @@ function setupNavigation() {
     });
 }
 
-function renderCivilizationPreview() {
-    const grid = document.getElementById('civ-grid');
+function renderCivilizationCards(id) {
+    const grid = document.getElementById(id);
     if (!grid) return;
 
-    // data.js에서 가져온 실제 문명 데이터 사용
     if (typeof civilizations === 'undefined') {
         grid.innerHTML = '<p>문명 데이터를 로드하지 못했습니다.</p>';
         return;
     }
 
-    grid.innerHTML = civilizations.map(civ => `
-        <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s; cursor: pointer;" data-name="${civ.name}">
-            <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
-            <p style="color: var(--text-muted)">${civ.theme}</p>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">${civ.shortDescription}</p>
-        </div>
-    `).join('');
+    // compute asset base for images (same logic as characters page)
+    const assetBase = (function() {
+        const p = location.pathname;
+        if (p.includes('/pages/')) return '../assets/images/characters/';
+        return 'assets/images/characters/';
+    })();
 
-    // 카드 호버 효과 및 클릭 시 상세 페이지 이동 (예시: world.html에 #anchor 사용)
-    document.querySelectorAll('.civ-card').forEach(card => {
-        card.addEventListener('mouseenter', () => card.style.transform = 'scale(1.05)');
-        card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
+    grid.innerHTML = civilizations.map(civ => {
+        const imgSrc = assetBase + encodeURIComponent(civ.imageFile);
+        return `
+        <div class="civ-card" data-name="${civ.name}" style="border-left-color: ${civ.colorVar};">
+            <img src="${imgSrc}" alt="${civ.name}" class="civ-img" loading="lazy" />
+            <div class="civ-body">
+                <h3 style="color: ${civ.colorVar}; margin:0;">${civ.name}</h3>
+                <p class="muted" style="margin:0;">${civ.theme}</p>
+                <p class="muted" style="font-size:0.95rem; margin-top:0.5rem;">${civ.shortDescription}</p>
+            </div>
+        </div>
+        `;
+    }).join('');
+
+    // 클릭 시 처리 (공통 동작)
+    document.querySelectorAll(`#${id} .civ-card`).forEach(card => {
         card.addEventListener('click', () => {
-            // 현재는 간단히 콘솔에 출력, 추후 상세 페이지 구현 가능
             console.log('Selected civilization:', card.dataset.name);
         });
     });

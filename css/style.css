@@ -15,6 +15,9 @@
     --color-elf: #00ffcc;    /* Cyberpunk - Neon Cyan */
     --color-orc: #4b5320;    /* Biopunk - Olive */
     --color-dragon: #9370db; /* Magic - Purple */
+    /* Missing variables used elsewhere */
+    --bg-card: #232323;
+    --glass-border: #444;
 }
 
 * {
@@ -30,6 +33,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
 }
+
+/* Ensure content isn't hidden behind fixed navbar */
+main { padding-top: 90px; }
 
 a {
     text-decoration: none;
@@ -218,7 +224,8 @@ footer {
 .wiki h1 {
     font-size: 3rem;
     color: var(--primary-color);
-    text-align: center;
+    /* Align headings to the left for better readability */
+    text-align: left;
     margin-bottom: 3rem;
     text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
@@ -318,3 +325,174 @@ footer {
     color: var(--primary-color);
     text-decoration: underline;
 }
+
+/* World overview: left-align content specifically (overrides .intro center alignment) */
+#world-overview {
+    text-align: left;
+}
+#world-overview .world-hero img {
+    display: block;
+    margin: 0 0 1rem 0;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    width: auto;
+}
+#world-overview #world-markdown {
+    line-height: 1.75;
+}
+
+/* Markdown content styles for readability */
+#world-markdown h1, #world-markdown h2, #world-markdown h3 {
+    color: var(--primary-color);
+}
+
+#world-markdown h1 { font-size: 2rem; margin: 2rem 0 1rem; }
+#world-markdown h2 { font-size: 1.4rem; margin: 1.5rem 0 0.8rem; }
+#world-markdown h3 { font-size: 1.1rem; margin: 1rem 0; }
+
+/* Ensure headings inside description sections also have vertical spacing */
+.description h3 {
+    font-size: 1.1rem;
+    margin: 1rem 0;
+}
+
+#world-markdown p { margin: 0.8rem 0; color: var(--text-muted); }
+#world-markdown hr { border: none; border-top: 1px solid #444; margin: 2rem 0; }
+#world-markdown strong { color: var(--text-main); }
+#world-markdown ul { margin-left: 1.2rem; }
+
+/* Unordered and ordered list styling for markdown content (including description sections) */
+#world-markdown ul,
+.description ul {
+    margin-left: 1.5rem;
+    padding-left: 0.5rem;
+    list-style-type: disc;
+    color: var(--text-muted);
+}
+
+#world-markdown ol,
+.description ol {
+    margin-left: 1.5rem;
+    padding-left: 0.5rem;
+    list-style-type: decimal;
+    color: var(--text-muted);
+}
+
+/* Blockquote styling for markdown content */
+#world-markdown blockquote,
+.description blockquote {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--primary-color);
+    color: var(--text-muted);
+    font-style: italic;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+}
+
+/* Character page controls and improved cards */
+.character-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.search-input, .filter-select {
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    outline: none;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s ease;
+}
+.search-input:focus, .filter-select:focus {
+    border-color: var(--primary-color);
+}
+.search-input::placeholder { color: #64748b; }
+
+.civ-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    /* set card width to 75% of its container and center */
+    width: 75%;
+    margin: 0 auto;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--glass-border);
+    border-left: 8px solid transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+/* Image size for civilization cards */
+.civ-card .civ-img {
+    width: 120px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.civ-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    background: rgba(45, 55, 72, 0.8);
+}
+.civ-card img {
+    width: 75%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.civ-card .civ-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    text-align: left;
+    flex: 1;
+}
+
+/* Characters page: force single-column list (one item per row) and ensure text wraps inside cards */
+.characters-page .civilization-grid {
+    grid-template-columns: 1fr;
+}
+.characters-page .civ-card {
+    white-space: normal;
+    word-break: break-word;
+}
+.characters-page .civ-card img {
+    object-fit: cover;
+}
+
+/* On larger screens keep world page cards side‑by‑side, but allow character page cards to stack vertically */
+@media (min-width: 768px) {
+    .characters-page .civ-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .characters-page .civ-card img {
+        width: 100%;
+    }
+}
+
+/* World page: force single column grid */
+.world-page .civilization-grid {
+    grid-template-columns: 1fr;
+}
+
+/* Markdown content width for readability */
+#world-markdown, #world-overview #world-markdown {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* subtle utility */
+.muted { color: var(--text-muted); }

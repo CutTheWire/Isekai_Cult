@@ -6,6 +6,8 @@
     <title>Isekai Cult | 세계관</title>
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/data.js"></script>
+    <!-- Markdown parser for world overview -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
@@ -20,10 +22,25 @@
         </nav>
     </header>
 
-    <main>
+    <main class="world-page">
         <section class="intro">
-            <h2>5대 문명 개요</h2>
-            <div class="civilization-grid" id="civ-grid"></div>
+            <h2>5대 문명</h2>
+
+            <div id="civ-grid" class="civilization-grid"></div>
+        </section>
+
+        <section id="world-overview" class="wiki">
+
+            <h2>세계관 소개</h2>
+
+            <div class="world-hero">
+                <img
+                    src="../assets/images/backgrounds/세계.png"
+                    alt="세계 지도">
+            </div>
+
+            <article id="world-markdown"></article>
+
         </section>
     </main>
 
@@ -31,19 +48,7 @@
         <p>&copy; 2026 Isekai Cult Simulation. All rights reserved.</p>
     </footer>
 
-    <script>
-        // Render civilization cards on the world page
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('civ-grid');
-            if (!grid || typeof civilizations === 'undefined') return;
-            grid.innerHTML = civilizations.map(civ => `
-                <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s; cursor: pointer;" data-name="${civ.name}">
-                    <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
-                    <p style="color: var(--text-muted)">${civ.theme}</p>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">${civ.shortDescription}</p>
-                </div>
-            `).join('');
-        });
-    </script>
+    <script src="../js/main.js"></script>
+    <script src="../js/world.js"></script>
 </body>
 </html>

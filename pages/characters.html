@@ -22,9 +22,15 @@
         </nav>
     </header>
 
-    <main>
+    <main class="characters-page">
         <section class="intro">
             <h2>종족 도감</h2>
+            <div class="character-controls">
+                <input id="search" class="search-input" type="search" placeholder="검색 (이름 / 설명 등)">
+                <select id="filter" class="filter-select">
+                    <option value="all">모두 표시</option>
+                </select>
+            </div>
             <div class="civilization-grid" id="civ-grid"></div>
         </section>
     </main>
@@ -34,30 +40,75 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // wait until markdowns are loaded by data.js
+            if (window.civilizationsReady) await window.civilizationsReady;
+
             const grid = document.getElementById('civ-grid');
+            const search = document.getElementById('search');
+            const filter = document.getElementById('filter');
             if (!grid || typeof civilizations === 'undefined') return;
 
-            // 현재 페이지 위치를 기준으로 assets 폴더의 상대 경로를 계산합니다.
+            // compute asset base depending on page location
             const assetBase = (function() {
                 const p = location.pathname;
-                // 보통 페이지 파일은 /pages/ 하위에 있으므로 상위로 한 단계 이동
                 if (p.includes('/pages/')) return '../assets/images/characters/';
-                // 루트(예: index.html)에서 접근하는 경우
                 return 'assets/images/characters/';
             })();
 
-            grid.innerHTML = civilizations.map(civ => {
-                const imgSrc = assetBase + encodeURIComponent(civ.imageFile);
-                return `
-                    <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s;">
-                        <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
-                        <p style="color: var(--text-muted)">${civ.theme}</p>
-                        <img src="${imgSrc}" alt="${civ.name}" loading="lazy" style="width:100%; margin-top:0.5rem; border-radius:5px;"/>
-                        <div style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">${marked.parse(civ.detailMarkdown)}</div>
+            // populate filter options based on civilization names
+            const names = Array.from(new Set(civilizations.map(c => c.name)));
+            names.forEach(n => {
+                const opt = document.createElement('option');
+                opt.value = n;
+                opt.textContent = n;
+                filter.appendChild(opt);
+            });
+
+            function renderGrid() {
+                const q = (search.value || '').trim().toLowerCase();
+                const f = filter.value;
+                const list = civilizations.filter(civ => {
+                    if (f !== 'all' && civ.name !== f) return false;
+                    if (!q) return true;
+                    const hay = (civ.name + ' ' + civ.alias + ' ' + civ.shortDescription + ' ' + (civ.detailMarkdown || '')).toLowerCase();
+                    return hay.includes(q);
+                });
+
+                // Build structured HTML for each civilization using semantic elements
+                grid.innerHTML = list.map(civ => {
+                    const imgSrc = assetBase + encodeURIComponent(civ.imageFile);
+                    return `
+                    <div class="civ-card" style="border-left: 6px solid ${civ.colorVar};">
+                        <img src="${imgSrc}" alt="${civ.name}" loading="lazy" />
+                        <article class="civ-body">
+                            <header>
+                                <h3 style="color: ${civ.colorVar}; text-align: left; margin-bottom: 0.2rem;">${civ.name}</h3>
+                                <p class="muted" style="text-align: left; font-weight: bold; margin-bottom: 0.5rem;">${civ.theme}</p>
+                            </header>
+                            <section class="description" style="font-size:0.95rem; text-align: left;">
+                                ${marked.parse(civ.detailMarkdown || '')}
+                            </section>
+                        </article>
                     </div>
                 `;
-            }).join('');
+                }).join('');
+            }
+
+            // events
+            // When typing in the search box, reset the filter to "all"
+            search.addEventListener('input', () => {
+                filter.value = 'all';
+                renderGrid();
+            });
+            // When selecting a name filter, clear the search input
+            filter.addEventListener('change', () => {
+                search.value = '';
+                renderGrid();
+            });
+
+            // initial render
+            renderGrid();
         });
     </script>
 </body>
