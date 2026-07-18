@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프리미엄 TRPG 종족 배너 - 커스텀 에디션</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Sans+KR:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <!-- 이미지 저장을 위한 html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            /* 기본값: 스팀펑크 골드 테마 */
+            --color-primary: #ffca28;
+            --color-bg: #0f0f0f;
+            --color-surface: rgba(45, 33, 21, 0.95);
+            --color-text: #e0d8c3;
+            --color-accent: #d32f2f;
+            --color-muted: #bcaaa4;
+            --border-color: #8e6e46;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--color-bg);
+            background-image: radial-gradient(circle at 50% 50%, #2c1e14 0%, var(--color-bg) 100%);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* 설정 패널 */
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 14px;
+        }
+
+        input[type="color"] {
+            border: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            background: none;
+        }
+
+        .btn-download {
+            background: var(--color-primary);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* 배너 컨테이너 */
+        .card-container {
+            width: 850px;
+            height: 230px;
+            background: var(--color-surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            display: flex;
+            position: relative;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-image {
+            width: 230px;
+            height: 100%;
+            background-image: url('드워프.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+            border-right: 2px solid var(--color-primary);
+            z-index: 2;
+        }
+
+        .card-image::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent 60%, var(--color-surface));
+        }
+
+        .card-info {
+            flex: 1;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .race-name {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(to bottom, #fff, var(--color-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .race-feature {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--color-muted);
+            margin-bottom: 25px;
+            border-left: 2px solid var(--color-primary);
+            padding-left: 15px;
+        }
+
+        .tech-traits {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .trait-item {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 15px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .trait-title {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .trait-desc {
+            font-size: 13px;
+            color: var(--color-text);
+            line-height: 1.4;
+            font-weight: 300;
+        }
+
+        .footer-info {
+            position: absolute;
+            bottom: 15px;
+            right: 30px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+        }
+
+        .gear-deco {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            opacity: 0.05;
+            filter: invert(1);
+            z-index: 0;
+            animation: rotate 20s linear infinite;
+        }
+        .gear-1 { top: -50px; right: -50px; }
+        .gear-2 { bottom: -80px; left: 300px; animation-direction: reverse; }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <div class="control-group">
+            <label for="colorPicker">테마 색상 선택:</label>
+            <input type="color" id="colorPicker" value="#cd7f32">
+        </div>
+        <button class="btn-download" id="downloadBtn">이미지로 저장</button>
+    </div>
+
+    <div class="card-container" id="captureArea">
+        <img src="   https://cdn-icons-png.flaticon.com/512/14849/14849961.png " class="gear-deco gear-1" alt="deco">
+        <img src="   https://cdn-icons-png.flaticon.com/512/14849/14849961.png " class="gear-deco gear-2" alt="deco">
+        <div class="card-image">
+            <img src="assets/images/characters/드워프.png" alt="종족 이미지" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="card-info">
+            <div class="race-header">
+                <div class="race-name">dwarf</div>
+                <div class="race-feature">"뭣! 엘팡 스토어에서 산 망치가 가성비 최고라고?
+                    <br> 
+                    새끼... 기열!!!"</div>
+            </div>
+        </div>
+        <div class="footer-info">isekai-cult by wire</div>
+    </div>
+
+    <script type="module">
+        import { converter, oklch, formatHex } from 'https://esm.sh/culori';
+
+        const toOklch = converter('oklch');
+        const toHex = formatHex;
+
+        function generatePerfectPalette(inputHex) {
+            const rawColor = toOklch(inputHex);
+            const l = Math.max(0.2, Math.min(rawColor.l, 0.85));
+            const c = Math.min(rawColor.c, 0.18);
+            const h = rawColor.h || 0;
+
+            return {
+                primary: toHex({ mode: 'oklch', l, c, h }),
+                background: toHex({ mode: 'oklch', l: 0.1, c: 0.01, h }), // 다크모드 기반으로 조정
+                surface: toHex({ mode: 'oklch', l: 0.2, c: 0.02, h }),
+                text: toHex({ mode: 'oklch', l: 0.9, c: 0.01, h }),
+                accent: toHex({ mode: 'oklch', l: 0.65, c: 0.2, h: (h + 180) % 360 })
+            };
+        }
+
+        const colorPicker = document.getElementById('colorPicker');
+        
+        function updateTheme(hex) {
+            const palette = generatePerfectPalette(hex);
+            document.documentElement.style.setProperty('--color-primary', palette.primary);
+            document.documentElement.style.setProperty('--color-bg', palette.background);
+            document.documentElement.style.setProperty('--color-surface', palette.surface);
+            document.documentElement.style.setProperty('--color-text', palette.text);
+            document.documentElement.style.setProperty('--color-accent', palette.accent);
+        }
+
+        colorPicker.addEventListener('input', (e) => updateTheme(e.target.value));
+
+        // [수정됨] 화면에 보이는 그대로 저장하는 최적화 로직
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const area = document.getElementById('captureArea');
+            const panel = document.querySelector('.control-panel');
+            
+            // 1. 캡처 전 UI 정리 (패널 숨김)
+            panel.style.display = 'none';
+
+            try {
+                const canvas = await html2canvas(area, {
+                    scale: 3,               // 초고해상도 (Retina 대응)
+                    useCORS: true,         // 외부 이미지(기어 아이콘 등) 허용
+                    allowTaint: true,      // 크로스 도메인 이미지 렌더링 허용
+                    backgroundColor: null, // 투명 배경 유지
+                    logging: false,        // 로그 끔
+                    onclone: (clonedDoc) => {
+                        // 복제된 문서에서 폰트가 깨지지 않도록 강제 설정 가능
+                        const clonedArea = clonedDoc.getElementById('captureArea');
+                        clonedArea.style.transform = 'none';
+                    }
+                });
+
+                const link = document.createElement('a');
+                link.download = 'race-banner-premium.png';
+                link.href = canvas.toDataURL('image/png', 1.0); // 최고 품질
+                link.click();
+            } catch (error) {
+                console.error('저장 중 오류 발생:', error);
+                alert('이미지 저장 중 오류가 발생했습니다.');
+            } finally {
+                // 2. 캡처 후 UI 복구
+                panel.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
