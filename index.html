@@ -7,20 +7,26 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html">ISEKAI CULT</a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">홈</a></li>
-                <li><a href="pages/world.html">세계관</a></li>
-                <li><a href="pages/characters.html">종족 도감</a></li>
-                <li><a href="pages/system.html">시스템 가이드</a></li>
-                <li><a href="https://crack.wrtn.ai/detail/6a5a568dead4f43e45994e22" target="_blank" rel="noopener noreferrer">크랙</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="navbar"></div>
+    <script>
+        // Load shared navbar and adjust links based on current page location
+        fetch('components/navbar.html')
+            .then(r => r.text())
+            .then(html => {
+                const container = document.createElement('div');
+                container.innerHTML = html;
+                // Adjust hrefs for root page (no prefix needed)
+                const links = container.querySelectorAll('a');
+                links.forEach(a => {
+                    const href = a.getAttribute('href');
+                    if (href === 'index.html') a.setAttribute('href', 'index.html');
+                    else if (href === 'pages/world.html') a.setAttribute('href', 'pages/world.html');
+                    else if (href === 'pages/characters.html') a.setAttribute('href', 'pages/characters.html');
+                    else if (href === 'pages/system.html') a.setAttribute('href', 'pages/system.html');
+                });
+                document.getElementById('navbar').innerHTML = container.innerHTML;
+            });
+    </script>
 
     <main>
         <section class="hero">

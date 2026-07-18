@@ -360,6 +360,20 @@ footer {
     object-fit: contain;
     width: auto;
 }
+
+/* Make the hero container width match the markdown width */
+#world-overview .world-hero {
+    width: 100%;
+    margin: 0 auto;
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+    #world-overview .world-hero { width: 600px; }
+}
+
+@media (min-width: 900px) {
+    #world-overview .world-hero { width: calc(66.666vw); max-width: none; }
+}
 #world-overview #world-markdown {
     line-height: 1.75;
 }

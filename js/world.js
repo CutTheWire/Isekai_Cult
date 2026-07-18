@@ -35,8 +35,10 @@ function setupWorldHero(){
 
     heroImg.src = assetBase + encodeURIComponent('세계.png');
     heroImg.alt = '세계 지도';
-    // make image responsive to its container width
-    heroImg.style.width = '100%';
+    // make image responsive and centered
+    heroImg.style.width = '75%';
+    heroImg.style.display = 'block';
+    heroImg.style.margin = '0 auto'; // center horizontally
     heroImg.style.borderRadius = '8px';
 }
 

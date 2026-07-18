@@ -7,17 +7,30 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar" role="navigation" aria-label="Main navigation">
-            <div class="logo"><a href="../index.html">ISEKAI CULT</a></div>
-            <ul class="nav-links">
-                <li><a href="../index.html">홈</a></li>
-                <li><a href="world.html">세계관</a></li>
-                <li><a href="characters.html">종족 도감</a></li>
-                <li><a href="system.html" class="active">시스템 가이드</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="navbar"></div>
+    <script>
+        // Load shared navbar for subpages (relative path)
+        fetch('../components/navbar.html')
+            .then(r => r.text())
+            .then(html => {
+                const container = document.createElement('div');
+                container.innerHTML = html;
+                // Update links to be relative to this page
+                const links = container.querySelectorAll('a');
+                links.forEach(a => {
+                    const href = a.getAttribute('href');
+                    if (href === 'index.html') a.setAttribute('href', '../index.html');
+                    else if (href === 'pages/world.html') a.setAttribute('href', 'world.html');
+                    else if (href === 'pages/characters.html') a.setAttribute('href', 'characters.html');
+                    else if (href === 'pages/system.html') a.setAttribute('href', 'system.html');
+                });
+                // Mark current page as active
+                const path = location.pathname.split('/').pop();
+                const activeLink = container.querySelector(`a[href="${path}"]`);
+                if (activeLink) activeLink.classList.add('active');
+                document.getElementById('navbar').innerHTML = container.innerHTML;
+            });
+    </script>
 
     <main class="wiki">
         <br><br>
