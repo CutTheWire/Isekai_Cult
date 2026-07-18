@@ -147,24 +147,25 @@ ul {
 }
 
 /* Intro Section */
-.intro {
-    padding: 5rem 10%;
-    text-align: center;
+/* Card layout for world page: image + description on a single centered row */
+.civ-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   /* center the row contents horizontally */
+    align-items: center;       /* vertically align image and text */
+    gap: 1rem;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    width: 100%;
+    margin: 0 auto;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--glass-border);
+    border-left: 8px solid transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: center;       /* center text inside the card */
 }
-
-.intro h2 {
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    color: var(--primary-color);
-}
-
-.civilization-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-/* Footer */
 footer {
     padding: 2rem;
     text-align: center;
@@ -492,8 +493,7 @@ footer {
 
 /* Image inside character cards: scale with card width, max 75% of its natural size */
 .civ-card-characters img {
-    width: 100%;            /* fill card width */
-    max-width: 75%;         /* never exceed 75% of its natural size */
+    max-width: 55%;         /* never exceed 75% of its natural size */
     height: auto;
     object-fit: contain;
     flex-shrink: 0;
@@ -555,10 +555,11 @@ footer {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 .civ-card .civ-body {
+    /* Ensure description stays centered */
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    text-align: left;
+    text-align: center;
     flex: 1;
 }
 
