@@ -6,6 +6,8 @@
     <title>Isekai Cult | 종족 도감</title>
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/data.js"></script>
+    <!-- Markdown parser for rendering detailed civilization descriptions -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
@@ -35,14 +37,27 @@
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('civ-grid');
             if (!grid || typeof civilizations === 'undefined') return;
-            grid.innerHTML = civilizations.map(civ => `
-                <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s;">
-                    <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
-                    <p style="color: var(--text-muted)">${civ.theme}</p>
-                    <img src="${civ.image}" alt="${civ.name}" loading="lazy" style="width:100%; margin-top:0.5rem; border-radius:5px;"/>
-                    <p style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">${civ.description}</p>
-                </div>
-            `).join('');
+
+            // 현재 페이지 위치를 기준으로 assets 폴더의 상대 경로를 계산합니다.
+            const assetBase = (function() {
+                const p = location.pathname;
+                // 보통 페이지 파일은 /pages/ 하위에 있으므로 상위로 한 단계 이동
+                if (p.includes('/pages/')) return '../assets/images/characters/';
+                // 루트(예: index.html)에서 접근하는 경우
+                return 'assets/images/characters/';
+            })();
+
+            grid.innerHTML = civilizations.map(civ => {
+                const imgSrc = assetBase + civ.imageFile;
+                return `
+                    <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s;">
+                        <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
+                        <p style="color: var(--text-muted)">${civ.theme}</p>
+                        <img src="${imgSrc}" alt="${civ.name}" loading="lazy" style="width:100%; margin-top:0.5rem; border-radius:5px;"/>
+                        <div style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">${marked.parse(civ.detailMarkdown)}</div>
+                    </div>
+                `;
+            }).join('');
         });
     </script>
 </body>

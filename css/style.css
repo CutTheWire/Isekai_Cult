@@ -206,3 +206,115 @@ footer {
     .civ-card {
         animation: fadeIn 0.5s ease-out;
     }
+/* --------------------------------------------------- */
+/* Wiki / System Guide Specific Styles */
+/* --------------------------------------------------- */
+.wiki {
+    padding: 5rem 10%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.wiki h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 3rem;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.wiki section {
+    background: #222;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 3rem;
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: fadeIn 0.8s ease-out;
+}
+
+.wiki h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wiki p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.wiki ul, .wiki ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.wiki li {
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+}
+
+.wiki code {
+    background: #333;
+    color: var(--color-elf);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', monospace;
+}
+
+.wiki pre {
+    background: #111;
+    padding: 1.5rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    border: 1px solid #444;
+    margin: 1rem 0;
+}
+
+.wiki pre code {
+    background: transparent;
+    color: #ddd;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.wiki details {
+    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.wiki details[open] {
+    border-color: var(--primary-color);
+}
+
+.wiki summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-main);
+    outline: none;
+    user-select: none;
+}
+
+.wiki summary:hover {
+    color: var(--primary-color);
+}
+
+.wiki .note {
+    text-align: center;
+    margin-top: 4rem;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.wiki .note a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
