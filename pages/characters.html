@@ -79,7 +79,7 @@
                 grid.innerHTML = list.map(civ => {
                     const imgSrc = assetBase + encodeURIComponent(civ.imageFile);
                     return `
-                    <div class="civ-card" style="border-left: 6px solid ${civ.colorVar};">
+                    <div class="civ-card-characters" style="border-left: 6px solid ${civ.colorVar};">
                         <img src="${imgSrc}" alt="${civ.name}" loading="lazy" />
                         <article class="civ-body">
                             <header>

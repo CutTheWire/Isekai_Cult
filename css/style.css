@@ -181,11 +181,16 @@ footer {
         .navbar {
             flex-direction: column;
             padding: 1rem 5%;
+            align-items: center;
         }
+        /* Keep navigation links in a single row on small screens */
         .nav-links {
-            flex-direction: column;
-            gap: 1rem;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
             margin-top: 0.5rem;
+            overflow-x: auto; /* allow scrolling if needed */
+            font-size: 0.9rem; /* slightly smaller font */
         }
         .hero {
             height: 70vh;
@@ -234,7 +239,7 @@ footer {
 /* --------------------------------------------------- */
 .wiki {
     padding: 5rem 10%;
-    max-width: 1000px;
+    max-width: none; /* remove fixed max‑width to allow markdown to expand */
     margin: 0 auto;
 }
 
@@ -441,8 +446,28 @@ footer {
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 1.5rem;
-    /* set card width to 75% of its container and center */
-    width: 75%;
+    /* width = 50% of viewport, centered; shrink with viewport but not below 300px */
+        /* Default: full width for very small screens */
+        width: 100%;
+        margin: 0 auto;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--glass-border);
+    border-left: 8px solid transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+/* New class for character page cards – same layout as world page cards */
+.civ-card-characters {
+    display: flex;
+    flex-direction: column; /* stack image then description */
+    align-items: center;   /* center image horizontally */
+    gap: 1rem;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    width: 100%;
     margin: 0 auto;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid var(--glass-border);
@@ -450,6 +475,52 @@ footer {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     text-align: left;
 }
+
+/* Image inside character cards: scale with card width, max 75% of its natural size */
+.civ-card-characters img {
+    width: 100%;            /* fill card width */
+    max-width: 75%;         /* never exceed 75% of its natural size */
+    height: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+    align-self: center;      /* keep centered in column layout */
+}
+
+/* Ensure description takes remaining space */
+.civ-card-characters .civ-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    text-align: left;
+}
+    /* 600px ≤ viewport < 900px : fixed 600px width */
+    @media (min-width: 600px) and (max-width: 899px) {
+        .civ-card {
+            width: 600px;
+        }
+    }
+
+    /* viewport ≥ 900px : width = 2/3 of viewport */
+    @media (min-width: 900px) {
+        .civ-card {
+            width: calc(66.666vw);
+            max-width: none;
+        }
+    }
+    /* Apply same responsive width rules to character page cards */
+    @media (min-width: 600px) and (max-width: 899px) {
+        .civ-card-characters {
+            width: 600px;
+        }
+    }
+
+    @media (min-width: 900px) {
+        .civ-card-characters {
+            width: calc(66.666vw);
+            max-width: none;
+        }
+    }
 
 /* Image size for civilization cards */
 .civ-card .civ-img {
@@ -481,11 +552,12 @@ footer {
 .characters-page .civilization-grid {
     grid-template-columns: 1fr;
 }
-.characters-page .civ-card {
+/* Character page specific card adjustments */
+.characters-page .civ-card-characters {
     white-space: normal;
     word-break: break-word;
 }
-.characters-page .civ-card img {
+.characters-page .civ-card-characters img {
     object-fit: cover;
 }
 
@@ -495,9 +567,6 @@ footer {
         flex-direction: column;
         align-items: flex-start;
     }
-    .characters-page .civ-card img {
-        width: 100%;
-    }
 }
 
 /* World page: force single column grid */
@@ -505,10 +574,29 @@ footer {
     grid-template-columns: 1fr;
 }
 
-/* Markdown content width for readability */
-#world-markdown, #world-overview #world-markdown {
-    max-width: 900px;
+/* Markdown content width synchronized with civilization description width (75% of container) */
+#world-markdown,
+#world-overview #world-markdown {
+    /* default: full width for very small screens */
+    width: 100%;
     margin: 0 auto;
+}
+
+/* 600px ≤ viewport < 900px : fixed 600px width */
+@media (min-width: 600px) and (max-width: 899px) {
+    #world-markdown,
+    #world-overview #world-markdown {
+        width: 600px;
+    }
+}
+
+/* viewport ≥ 900px : width = 2/3 of viewport */
+@media (min-width: 900px) {
+    #world-markdown,
+    #world-overview #world-markdown {
+        width: calc(66.666vw);
+        max-width: none;
+    }
 }
 
 /* subtle utility */
