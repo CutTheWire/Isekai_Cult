@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isekai Cult | 종족 도감</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/data.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="logo"><a href="../index.html">ISEKAI CULT</a></div>
+            <ul class="nav-links">
+                <li><a href="../index.html">홈</a></li>
+                <li><a href="world.html">세계관</a></li>
+                <li><a href="characters.html" class="active">종족 도감</a></li>
+                <li><a href="system.html">시스템 가이드</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>종족 도감</h2>
+            <div class="civilization-grid" id="civ-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Isekai Cult Simulation. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('civ-grid');
+            if (!grid || typeof civilizations === 'undefined') return;
+            grid.innerHTML = civilizations.map(civ => `
+                <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s;">
+                    <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
+                    <p style="color: var(--text-muted)">${civ.theme}</p>
+                    <img src="${civ.image}" alt="${civ.name}" loading="lazy" style="width:100%; margin-top:0.5rem; border-radius:5px;"/>
+                    <p style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">${civ.description}</p>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
