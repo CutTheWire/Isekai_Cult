@@ -48,7 +48,7 @@
             })();
 
             grid.innerHTML = civilizations.map(civ => {
-                const imgSrc = assetBase + civ.imageFile;
+                const imgSrc = assetBase + encodeURIComponent(civ.imageFile);
                 return `
                     <div class="civ-card" style="border-top: 4px solid ${civ.colorVar}; background: #222; padding: 2rem; border-radius: 10px; transition: 0.3s;">
                         <h3 style="color: ${civ.colorVar}">${civ.name}</h3>
