@@ -1,5 +1,8 @@
 # Isekai Cult Simulation
 
+<img width="1376" height="768" alt="title" src="https://github.com/CutTheWire/Isekai_Cult/blob/main/title.png?raw=true" />
+
+
 ## 소개
 이 프로젝트는 **GitHub Pages**를 통해 배포되는 **이세계 교단 운영 시뮬레이션** 웹사이트입니다. 5대 문명(인간·수인, 드워프, 엘프, 오크, 용족)이 교차하는 세계관을 배경으로, 사용자는 교단의 최고 지도자로서 다양한 정책을 내리고 시뮬레이션을 진행합니다.
 
